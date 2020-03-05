@@ -1,34 +1,25 @@
-class Worker:
-    """ An abstraction of a worker. """
+from ..storage import db
 
-    def __init__(self, worker_id: str):
-        """ Create a worker instance.
-            Args:
-                worker_id: the id that uniquely identifies the user.
-        """
-        self._worker_id = worker_id
-        self._cycles = {}
 
-    def register_cycle(self, hash_key: str, fl_cycle, model_id) -> bool:
-        """ Save a new Cycle in worker's cycle registry by hash code.
-            Args:
-                hash_key: Key used to map the cycle.
-                fl_cycle: FederatedLearning Cycle instance.
-        """
-        self._cycles[hash_key] = fl_cycle
+class Worker(db.Model):
+    """ Web / Mobile worker table.
+        Columns:
+            id (String, Primary Key): Worker's ID.
+            format_preference (String): either "list" or "ts"
+            ping (Int): Ping rate.
+            avg_download (Int): Download rate.
+            avg_upload (Int): Upload rate.
+            worker_cycles (WorkerCycle): Relationship between workers and cycles (One to many).
+    """
 
-    def get_cycle(self, hash_key: str):
-        """ Retrieve a specific cycle mapped by hash key.
-            Args:
-                hash_key : Hash key used to identify the desired cycle.
-            Retrurns:
-                cycle: A Cycle instance of None (if not found).
-        """
-        return self._cycles.get(hash_key, None)
+    __tablename__ = "__worker__"
 
-    def worker_id(self) -> str:
-        """ Get the id of this worker.
-            Returns:
-                worker_id (str) : the id of this worker.
-        """
-        return self._worker_id
+    id = db.Column(db.String, primary_key=True)
+    format_preference = db.Column(db.String())
+    ping = db.Column(db.BigInteger)
+    avg_download = db.Column(db.BigInteger)
+    avg_upload = db.Column(db.BigInteger)
+    worker_cycle = db.relationship("WorkerCycle", backref="worker")
+
+    def __str__(self):
+        return f"<Worker id: {self.id}, format_preference: {self.format_preference}, ping : {self.ping}, download: {self.download}, upload: {self.upload}>"
