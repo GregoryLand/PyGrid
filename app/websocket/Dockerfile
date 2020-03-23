@@ -1,9 +1,18 @@
-FROM python:3.7-slim
-RUN apt-get update
-RUN apt-get install -y git python3-pip
-COPY ./requirements.txt /app/requirements.txt
+FROM archlinux/base
+run pacman -Syu --noconfirm \
+	base-devel \
+	vim \
+	git \
+	python \
+	python-pip \ 
+	python-flask \
+	python-flask-login \
+	python-redis \
+	gunicorn
+#COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app
-RUN pip3 install -r requirements.txt
+#RUN pip3 install -r requirements.txt
 COPY . /app
 WORKDIR /app
+run pacman -U --noconfirm /app/builtPackages/*
 ENTRYPOINT ["sh", "entrypoint.sh"]
