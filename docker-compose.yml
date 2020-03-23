@@ -68,3 +68,9 @@ services:
                 - "redis"
         ports:
             - 3003:3003
+    labs:
+        image: openmined/grid-jupyter:latest
+        build: ./jupyter/
+        ports:
+            - 8080:8080
+
