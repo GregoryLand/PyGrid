@@ -9,6 +9,6 @@ run pacman -Syu --noconfirm \
 WORKDIR /app
 COPY . /app
 WORKDIR /app
-run pacman -U --noconfirm /app/builtPackages/*
+run pacman -Syu --noconfirm; pacman -U --noconfirm /app/builtPackages/*
 ENTRYPOINT ["sh", "entrypoint.sh"]
 

@@ -14,5 +14,5 @@ WORKDIR /app
 #RUN pip3 install -r requirements.txt
 COPY . /app
 WORKDIR /app
-run pacman -U --noconfirm /app/builtPackages/*
+run pacman -Syu --noconfirm; pacman -U --noconfirm /app/builtPackages/*
 ENTRYPOINT ["sh", "entrypoint.sh"]
